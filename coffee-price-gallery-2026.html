@@ -18,7 +18,24 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,241,234,.94);backdro
 .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(180,83,42,.15)}
 .search svg{position:absolute;left:13px;top:11px;width:18px;height:18px;stroke:var(--mute);fill:none;stroke-width:2}
 .count{font-size:13px;color:var(--mute);white-space:nowrap}
-.filters{max-width:1400px;margin:0 auto;padding:0 18px 12px;display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center}
+.filters{max-width:1400px;margin:0 auto;padding:0 18px 12px;display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.filter-item{position:relative}
+.filter-toggle,.filter-action{min-height:38px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}
+.filter-toggle:hover,.filter-action:hover{border-color:var(--accent)}
+.filter-toggle.active{border-color:var(--accent);background:#f8eadd;color:var(--brand);font-weight:700}
+.filter-icon{font-size:16px;line-height:1}
+.filter-value{max-width:125px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mute);font-size:11px;font-weight:500}
+.filter-toggle.active .filter-value{color:inherit}
+.filter-popover{position:absolute;top:calc(100% + 6px);left:0;z-index:40;width:max-content;max-width:min(420px,calc(100vw - 24px));max-height:min(65vh,420px);overflow:auto;padding:10px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 10px 28px rgba(30,20,15,.2)}
+.filter-popover[hidden]{display:none}
+.filter-popover .grp{gap:6px}
+.filter-popover .grp>label{flex:0 0 100%;font-size:11px}
+.filter-popover .chip{min-height:36px}
+.filter-popover input,.filter-popover select{min-height:38px}
+.filter-range{display:flex;gap:8px;align-items:center}
+.filter-range .num{width:100px}
+.filter-action{color:var(--brand)}
+.filter-action#clr{margin-left:auto}
 .grp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .grp>label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--mute);margin-right:2px}
 .chip{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 12px;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s;font-family:inherit}
@@ -93,6 +110,27 @@ main{max-width:1400px;margin:0 auto;padding:18px}
 .nav button:hover{border-color:var(--accent)}
 footer{max-width:1400px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);font-size:12.5px}
 @media(max-width:760px){.md{grid-template-columns:1fr}.md .l{position:static}.md .l .big{height:240px}.ph{height:180px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:14.5px}.pr .v{font-size:16px}}
+@media(max-width:640px){
+ .top{padding:8px 10px;gap:8px}
+ .logo{font-size:clamp(15px,4.6vw,19px)}
+ .search{order:10;flex:1 0 100%;min-width:0}
+ .search input{font-size:16px}
+ .count{margin-left:auto}
+ .filters{padding:0 10px 8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .filter-item,.filter-toggle,.filter-action{width:100%;min-width:0}
+ .filter-toggle,.filter-action{gap:4px;padding:6px 4px;font-size:12px}
+ .filter-toggle{gap:0}
+ .filter-label,.filter-value{display:none}
+ .filter-toggle.active::after{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--accent)}
+ .filter-popover{max-width:min(380px,calc(100vw - 20px))}
+ .filter-item:nth-child(3n+2) .filter-popover{left:50%;transform:translateX(-50%)}
+ .filter-item:nth-child(3n) .filter-popover{left:auto;right:0}
+ .filter-popover .grp{max-width:100%}
+ .filter-range{flex-wrap:wrap}
+ .filter-range .num{width:calc(50% - 5px)}
+ .intro .ims{max-width:100%;flex-wrap:wrap}
+ main{padding:12px 10px}
+}
 @media(max-width:420px){.grid{grid-template-columns:1fr}}
 @media print{header,.nav,.x,.filters{display:none!important}.card{break-inside:avoid;box-shadow:none}.ov{position:static;display:none!important}body{background:#fff}}
 </style>
@@ -100,18 +138,33 @@ footer{max-width:1400px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
 <body>
 <header>
  <div class="top">
-  <div class="logo">Coffee Price Gallery<small>2026 price list · slides 5–68</small></div>
+  <div class="logo">lavazza's items september 2026<small>2026 price list · slides 5–68</small></div>
   <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Search name, blend, notes, price…" autocomplete="off"></div>
   <div class="count" id="count"></div>
  </div>
- <div class="filters">
-  <div class="grp" id="gBrand"><label>Brand</label></div>
-  <div class="grp" id="gCat"><label>Category</label></div>
-  <div class="grp" id="gRoast"><label>Roast</label></div>
-  <div class="grp"><label>Sort</label>
-   <select id="sort"><option value="slide">Original order</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option><option value="na">Name A–Z</option><option value="id">Intensity: high to low</option></select></div>
-  <div class="grp"><label>Price</label><input class="num" id="pmin" type="number" min="0" placeholder="min IQD"><input class="num" id="pmax" type="number" min="0" placeholder="max IQD"></div>
-  <button class="clear" id="clr">Reset</button>
+ <div class="filters" role="group" aria-label="Filters">
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="brand" aria-expanded="false" aria-controls="filter-brand"><span class="filter-icon" aria-hidden="true">☕</span><span class="filter-label">Brand</span><span class="filter-value" id="filterValueBrand">All</span></button>
+   <div class="filter-popover" id="filter-brand" hidden><div class="grp" id="gBrand"><label>Brand</label></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="cat" aria-expanded="false" aria-controls="filter-cat"><span class="filter-icon" aria-hidden="true">▦</span><span class="filter-label">Category</span><span class="filter-value" id="filterValueCat">All</span></button>
+   <div class="filter-popover" id="filter-cat" hidden><div class="grp" id="gCat"><label>Category</label></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="roast" aria-expanded="false" aria-controls="filter-roast"><span class="filter-icon" aria-hidden="true">◉</span><span class="filter-label">Roast</span><span class="filter-value" id="filterValueRoast">Any</span></button>
+   <div class="filter-popover" id="filter-roast" hidden><div class="grp" id="gRoast"><label>Roast</label></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="sort" aria-expanded="false" aria-controls="filter-sort"><span class="filter-icon" aria-hidden="true">↕</span><span class="filter-label">Sort</span><span class="filter-value" id="filterValueSort">Original</span></button>
+   <div class="filter-popover" id="filter-sort" hidden><div class="grp"><label for="sort">Sort</label>
+    <select id="sort"><option value="slide">Original order</option><option value="pa">Price: low to high</option><option value="pd">Price: high to low</option><option value="na">Name A–Z</option><option value="id">Intensity: high to low</option></select></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="price" aria-expanded="false" aria-controls="filter-price"><span class="filter-icon" aria-hidden="true">¤</span><span class="filter-label">Price</span><span class="filter-value" id="filterValuePrice">Any</span></button>
+   <div class="filter-popover" id="filter-price" hidden><div class="grp"><label>Price range · IQD</label><div class="filter-range"><input class="num" id="pmin" type="number" min="0" placeholder="min IQD" aria-label="Minimum price in IQD"><input class="num" id="pmax" type="number" min="0" placeholder="max IQD" aria-label="Maximum price in IQD"></div></div></div>
+  </div>
+  <button class="filter-action" type="button" id="clr"><span aria-hidden="true">↺</span><span>Reset</span></button>
  </div>
 </header>
 <main id="main"></main>
@@ -133,6 +186,31 @@ function chips(el,items,key,all){
   h+='<button class="chip'+(st[key]===''?' on':'')+'" data-k="'+key+'" data-v="">'+all+'</button>';
   items.forEach(function(it){h+='<button class="chip'+(st[key]===it.v?' on':'')+'" data-k="'+key+'" data-v="'+esc(it.v)+'">'+esc(it.l)+(it.n!=null?'<b>'+it.n+'</b>':'')+'</button>'});
   el.innerHTML=h;
+}
+function closeFilterMenus(returnFocus){
+  var open=document.querySelector('.filter-toggle[aria-expanded="true"]');
+  document.querySelectorAll('.filter-toggle[aria-expanded="true"]').forEach(function(button){
+    button.setAttribute('aria-expanded','false');$(button.getAttribute('aria-controls')).hidden=true});
+  if(returnFocus&&open)open.focus();
+  return !!open;
+}
+function toggleFilterMenu(name){
+  var button=document.querySelector('[data-filter-toggle="'+name+'"]'),wasOpen=button.getAttribute('aria-expanded')==='true';
+  closeFilterMenus(false);
+  if(!wasOpen){button.setAttribute('aria-expanded','true');$(button.getAttribute('aria-controls')).hidden=false}
+}
+function updateFilterToggles(){
+  var section=S.filter(function(item){return item.id===st.cat})[0];
+  var order={slide:'Original',pa:'Price ↑',pd:'Price ↓',na:'A–Z',id:'Intensity'};
+  var range=st.pmin==null&&st.pmax==null?'Any':(st.pmin==null?'…':Number(st.pmin).toLocaleString('en-US'))+'–'+(st.pmax==null?'…':Number(st.pmax).toLocaleString('en-US'));
+  var values={brand:st.brand||'All',cat:section?catLabel(section):'All',roast:st.roast||'Any',sort:order[st.sort]||order.slide,price:range};
+  var active={brand:!!st.brand,cat:!!st.cat,roast:!!st.roast,sort:st.sort!=='slide',price:st.pmin!=null||st.pmax!=null};
+  document.querySelectorAll('[data-filter-toggle]').forEach(function(button){
+    var key=button.dataset.filterToggle,value=values[key];
+    button.querySelector('.filter-value').textContent=value;
+    button.classList.toggle('active',active[key]);
+    button.setAttribute('aria-label',button.querySelector('.filter-label').textContent+': '+value);
+  });
 }
 function text(p){
   var a=[p.name].concat(p.sub,p.blend,p.tags,p.desc,p.pack,[p.price,p.collection||'',p.brand,p.category,'slide '+p.slide]);
@@ -174,6 +252,7 @@ function render(){
   chips($('gCat'),cs,'cat','All');
   var rs=['Light','Medium','Dark'].map(function(r){return {v:r,l:r,n:P.filter(function(p){return p.roast.indexOf(r)>=0&&match(p,'roast')}).length}});
   chips($('gRoast'),rs,'roast','Any');
+  updateFilterToggles();
   var list=P.filter(function(p){return match(p)});
   $('count').textContent=list.length+' of '+P.length+' products';
   var m=$('main'),h='';
@@ -225,22 +304,27 @@ function step(d){
 }
 document.addEventListener('click',function(e){
   var t=e.target;
-  var c=t.closest('.chip');if(c){var k=c.dataset.k;st[k]=c.dataset.v===st[k]?'':c.dataset.v;if(k==='brand')st.cat='';render();return}
+  var ft=t.closest('.filter-toggle');if(ft){toggleFilterMenu(ft.dataset.filterToggle);return}
+  var c=t.closest('.chip');if(c){closeFilterMenus(false);var k=c.dataset.k;st[k]=c.dataset.v===st[k]?'':c.dataset.v;if(k==='brand')st.cat='';render();return}
   var cd=t.closest('.card');if(cd){openP(+cd.dataset.i);return}
   var th=t.closest('[data-th]');if(th){$('big').src=src(th.dataset.th);[].forEach.call(th.parentNode.children,function(b){b.classList.toggle('on',b===th)});return}
   var nv=t.closest('[data-nav]');if(nv){step(+nv.dataset.nav);return}
   if(t.closest('[data-close]')||t===$('ov'))closeP();
 });
+document.addEventListener('click',function(e){if(!e.target.closest('.filter-item'))closeFilterMenus(false)});
 document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&closeFilterMenus(true))return;
   if(!$('ov').classList.contains('on'))return;
   if(e.key==='Escape')closeP();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);
 });
 var tm;$('q').addEventListener('input',function(){clearTimeout(tm);var v=this.value;tm=setTimeout(function(){st.q=v.trim();render()},120)});
-$('sort').addEventListener('change',function(){st.sort=this.value;render()});
+$('sort').addEventListener('change',function(){closeFilterMenus(false);st.sort=this.value;render()});
 function pv(v){return v===''?null:Math.max(0,+v)}
 $('pmin').addEventListener('input',function(){st.pmin=pv(this.value);render()});
 $('pmax').addEventListener('input',function(){st.pmax=pv(this.value);render()});
-$('clr').addEventListener('click',function(){st={q:'',brand:'',cat:'',roast:'',sort:'slide',pmin:null,pmax:null};$('q').value='';$('sort').value='slide';$('pmin').value='';$('pmax').value='';render()});
+$('pmin').addEventListener('change',function(){closeFilterMenus(false)});
+$('pmax').addEventListener('change',function(){closeFilterMenus(false)});
+$('clr').addEventListener('click',function(){closeFilterMenus(false);st={q:'',brand:'',cat:'',roast:'',sort:'slide',pmin:null,pmax:null};$('q').value='';$('sort').value='slide';$('pmin').value='';$('pmax').value='';render()});
 render();
 var m=/^#slide-(\d+)$/.exec(location.hash);if(m)openP(+m[1],false);
 })();

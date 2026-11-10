@@ -25,7 +25,25 @@ header{position:sticky;top:0;z-index:30;background:rgba(244,239,231,.95);backdro
 .lang button{border:0;background:none;padding:7px 12px;font-size:13px;cursor:pointer;color:var(--mute)}
 .lang button.on{background:var(--krifi);color:#fff}
 .count{font-size:13px;color:var(--mute);white-space:nowrap}
-.filters{max-width:1480px;margin:0 auto;padding:0 18px 10px;display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center}
+.filters{max-width:1480px;margin:0 auto;padding:0 18px 10px;display:flex;gap:7px;flex-wrap:wrap;align-items:flex-start}
+.filter-item{position:relative}
+.filter-toggle,.filter-action{min-height:38px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}
+.filter-toggle:hover,.filter-action:hover{border-color:var(--krifi)}
+.filter-toggle.active{border-color:var(--krifi);background:#fff6b8;color:var(--krifi);font-weight:700}
+.filter-icon{font-size:16px;line-height:1}
+.filter-value{max-width:125px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--mute);font-size:11px;font-weight:500}
+.filter-toggle.active .filter-value{color:inherit}
+.filter-popover{position:absolute;top:calc(100% + 6px);left:0;z-index:40;width:max-content;max-width:min(420px,calc(100vw - 24px));max-height:min(65vh,420px);overflow:auto;padding:10px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 10px 28px rgba(30,20,15,.2)}
+.filter-popover[hidden]{display:none}
+.filter-popover .grp{gap:6px}
+.filter-popover .grp>label{flex:0 0 100%;font-size:11px}
+.filter-popover .chip{min-height:36px}
+.filter-popover input,.filter-popover select{min-height:38px}
+.filter-range{display:flex;gap:8px;align-items:center}
+.filter-range label{font-size:12px;color:var(--mute)}
+.filter-range .num{width:100px}
+.filter-action{color:var(--krifi)}
+.filter-action#csv{margin-left:auto}
 .grp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .grp>label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--mute);margin-right:2px}
 .chip{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s}
@@ -138,6 +156,31 @@ details.ab summary{cursor:pointer;font-weight:700}
 .md.fm .nav button{background:#2a282d;color:#f1e6e4;border-color:#3d3a43}
 footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);font-size:12.5px}
 @media(max-width:760px){.md{grid-template-columns:1fr}.md .l{position:static;min-height:240px}.ph{height:185px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.nm{font-size:14px}.pr .v{font-size:16px}.bb .meta{margin-left:0;text-align:left}}
+@media(max-width:640px){
+ .top{padding:8px 10px;gap:8px}
+ .logos{gap:6px}
+ .logos .lk{width:36px;height:36px}
+ .logos .lf{height:36px}
+ .ttl{font-size:16px}
+ .search{order:10;flex:1 0 100%;min-width:0}
+ .search input{font-size:16px}
+ .count{margin-left:auto}
+ .filters{padding:0 10px 8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .filter-item,.filter-toggle,.filter-action{width:100%;min-width:0}
+ .filter-toggle,.filter-action{gap:4px;padding:6px 4px;font-size:12px}
+ .filter-toggle{gap:0}
+ .filter-label,.filter-value{display:none}
+ .filter-toggle.active::after{content:"";width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--krifi)}
+ .filter-action#csv span[data-t]{display:none}
+ .filter-action#csv{margin-left:0}
+ .filter-popover{max-width:min(380px,calc(100vw - 20px))}
+ .filter-item:nth-child(3n+2) .filter-popover{left:50%;transform:translateX(-50%)}
+ .filter-item:nth-child(3n) .filter-popover{left:auto;right:0}
+ .filter-popover .grp{max-width:100%}
+ .filter-range{flex-wrap:wrap}
+ .filter-range .num{width:calc(50% - 5px)}
+ main{padding:12px 10px 24px}
+}
 @media(max-width:420px){.grid{grid-template-columns:1fr}}
 @media print{header,.nav,.x,.filters{display:none!important}.card{break-inside:avoid;box-shadow:none}.ov{display:none!important}body{background:#fff}}
 </style>
@@ -151,14 +194,29 @@ footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
   <div class="lang" id="lang"><button data-l="en" class="on">EN</button><button data-l="it">IT</button></div>
   <div class="count" id="count"></div>
  </div>
- <div class="filters">
-  <div class="grp" id="gBrand"></div>
-  <div class="grp" id="gCat"></div>
-  <div class="grp" id="gType"></div>
-  <div class="grp"><label data-t="sort">Sort</label><select id="sort"></select></div>
-  <div class="grp"><label data-t="price">Price</label><input class="num" id="pmin" type="number" min="0" placeholder="min"><input class="num" id="pmax" type="number" min="0" placeholder="max"></div>
-  <button class="lnk" id="clr" data-t="reset">Reset</button>
-  <button class="lnk" id="csv" data-t="csv">Download price sheet (CSV)</button>
+ <div class="filters" role="group" aria-label="Filters">
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="brand" aria-expanded="false" aria-controls="filter-brand"><span class="filter-icon" aria-hidden="true">☕</span><span class="filter-label" data-filter-label="brand">Brand</span><span class="filter-value" id="filterValueBrand">All</span></button>
+   <div class="filter-popover" id="filter-brand" hidden><div class="grp" id="gBrand"></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="cat" aria-expanded="false" aria-controls="filter-cat"><span class="filter-icon" aria-hidden="true">▦</span><span class="filter-label" data-filter-label="cat">Category</span><span class="filter-value" id="filterValueCat">All</span></button>
+   <div class="filter-popover" id="filter-cat" hidden><div class="grp" id="gCat"></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="type" aria-expanded="false" aria-controls="filter-type"><span class="filter-icon" aria-hidden="true">◆</span><span class="filter-label" data-filter-label="type">Format</span><span class="filter-value" id="filterValueType">All</span></button>
+   <div class="filter-popover" id="filter-type" hidden><div class="grp" id="gType"></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="sort" aria-expanded="false" aria-controls="filter-sort"><span class="filter-icon" aria-hidden="true">↕</span><span class="filter-label" data-filter-label="sort">Sort</span><span class="filter-value" id="filterValueSort">Catalog</span></button>
+   <div class="filter-popover" id="filter-sort" hidden><div class="grp"><label data-t="sort">Sort</label><select id="sort"></select></div></div>
+  </div>
+  <div class="filter-item">
+   <button class="filter-toggle" type="button" data-filter-toggle="price" aria-expanded="false" aria-controls="filter-price"><span class="filter-icon" aria-hidden="true">¤</span><span class="filter-label" data-filter-label="price">Price</span><span class="filter-value" id="filterValuePrice">Any</span></button>
+   <div class="filter-popover" id="filter-price" hidden><div class="grp"><label>Price range · IQD</label><div class="filter-range"><input class="num" id="pmin" type="number" min="0" placeholder="min" aria-label="Minimum price in IQD"><input class="num" id="pmax" type="number" min="0" placeholder="max" aria-label="Maximum price in IQD"></div></div></div>
+  </div>
+  <button class="filter-action" type="button" id="clr"><span aria-hidden="true">↺</span><span data-t="reset">Reset</span></button>
+  <button class="filter-action" type="button" id="csv"><span aria-hidden="true">⇩</span><span data-t="csv">Download price sheet (CSV)</span></button>
  </div>
 </header>
 <main id="main"></main>
@@ -292,6 +350,29 @@ function match(p,ign){
 function chips(el,label,items,key){
  var h='<label>'+label+'</label><button class="chip'+(st[key]===''?' on':'')+'" data-k="'+key+'" data-v="">'+t('all')+'</button>';
  items.forEach(function(it){h+='<button class="chip'+(it.fm?' fm':'')+(st[key]===it.v?' on':'')+'" data-k="'+key+'" data-v="'+esc(it.v)+'">'+esc(it.l)+'<b>'+it.n+'</b></button>'});el.innerHTML=h}
+function closeFilterMenus(returnFocus){
+ var open=document.querySelector('.filter-toggle[aria-expanded="true"]');
+ document.querySelectorAll('.filter-toggle[aria-expanded="true"]').forEach(function(button){
+  button.setAttribute('aria-expanded','false');$(button.getAttribute('aria-controls')).hidden=true});
+ if(returnFocus&&open)open.focus();
+ return !!open}
+function toggleFilterMenu(name){
+ var button=document.querySelector('[data-filter-toggle="'+name+'"]'),wasOpen=button.getAttribute('aria-expanded')==='true';
+ closeFilterMenus(false);
+ if(!wasOpen){button.setAttribute('aria-expanded','true');$(button.getAttribute('aria-controls')).hidden=false}}
+function updateFilterToggles(){
+ var all=lang==='it'?'Tutti':'All',any=lang==='it'?'Tutti':'Any';
+ var cat=META.cats.filter(function(item){return item.id===st.cat})[0];
+ var order={cat:lang==='it'?'Catalogo':'Catalog',pa:lang==='it'?'Prezzo ↑':'Price ↑',pd:lang==='it'?'Prezzo ↓':'Price ↓',na:'A–Z',cd:lang==='it'?'Codice':'Code'};
+ var range=st.pmin==null&&st.pmax==null?any:(st.pmin==null?'…':Number(st.pmin).toLocaleString('en-US'))+'–'+(st.pmax==null?'…':Number(st.pmax).toLocaleString('en-US'));
+ var values={brand:st.brand?META.brands[st.brand].name:all,cat:cat?cat.name[lang].split(' · ')[0]:all,type:st.type?UI[lang].types[st.type]:all,sort:order[st.sort]||order.cat,price:range};
+ var active={brand:!!st.brand,cat:!!st.cat,type:!!st.type,sort:st.sort!=='cat',price:st.pmin!=null||st.pmax!=null};
+ document.querySelectorAll('[data-filter-toggle]').forEach(function(button){
+  var key=button.dataset.filterToggle,label=button.querySelector('[data-filter-label]').textContent,value=values[key];
+  button.querySelector('.filter-value').textContent=value;
+  button.classList.toggle('active',active[key]);
+  button.setAttribute('aria-label',label+': '+value);
+ })}
 function bean(f){var id='bg'+(++uid),fill=f===1?'var(--bean)':f===0?'none':'url(#'+id+')';
  return '<svg class="bean" viewBox="0 0 24 24"><defs>'+(f===.5?'<linearGradient id="'+id+'" x1="0" x2="1" y1="0" y2="0"><stop offset="50%" stop-color="#e0b300"/><stop offset="50%" stop-color="#e0b300" stop-opacity="0"/></linearGradient>':'')+'</defs><g transform="rotate(-35 12 12)"><ellipse cx="12" cy="12" rx="6.2" ry="9.2" fill="'+fill+'" stroke="#e0b300" stroke-width="1.4"/><path d="M12 3.4c-2.6 3.2 2.6 5.6 0 8.6s2.6 5.2 0 8.6" fill="none" stroke="'+(f===1?'#fff':'#e0b300')+'" stroke-width="1.2" opacity=".9"/></g></svg>'}
 function beans(v){var h='';for(var i=1;i<=5;i++)h+=bean(v>=i?1:(v>=i-.5?.5:0));return '<div class="beans">'+h+'</div>'}
@@ -318,10 +399,12 @@ function aboutHTML(bk){var B=META.brands[bk],h='<details class="ab '+bk+'"><summ
 function render(){
  var q=$('q');q.placeholder=t('search');
  document.querySelectorAll('[data-t]').forEach(function(e){e.textContent=t(e.dataset.t)});
+ document.querySelectorAll('[data-filter-label]').forEach(function(e){e.textContent=t(e.dataset.filterLabel)});
  var so=$('sort'),sv=st.sort;so.innerHTML=[['cat','s_cat'],['pa','s_pa'],['pd','s_pd'],['na','s_na'],['cd','s_cd']].map(function(o){return '<option value="'+o[0]+'"'+(sv===o[0]?' selected':'')+'>'+t(o[1])+'</option>'}).join('');
  chips($('gBrand'),t('brand'),['krifi','fm'].map(function(b){return {v:b,l:META.brands[b].name,fm:b==='fm',n:P.filter(function(p){return p.brand===b&&match(p,'brand')}).length}}),'brand');
  chips($('gCat'),t('cat'),META.cats.filter(function(c){return !st.brand||c.brand===st.brand}).map(function(c){return {v:c.id,l:c.name[lang].split(' · ')[0],fm:c.brand==='fm',n:P.filter(function(p){return p.cat===c.id&&match(p,'cat')}).length}}),'cat');
  chips($('gType'),t('type'),TYPES.map(function(ty){return {v:ty,l:UI[lang].types[ty],n:P.filter(function(p){return typeOf(p)===ty&&match(p,'type')}).length}}).filter(function(x){return x.n>0||st.type===x.v}),'type');
+ updateFilterToggles();
  var list=P.filter(function(p){return match(p)});
  $('count').textContent=list.length+' '+t('of')+' '+P.length+' '+t('products');
  var m=$('main'),h='';
@@ -353,17 +436,20 @@ function openP(i,push){
 function closeP(){$('ov').classList.remove('on');document.body.style.overflow='';try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
 function step(d){var i=+$('md').dataset.i,k=-1;for(var j=0;j<cur.length;j++)if(cur[j].i===i)k=j;if(k<0||!cur.length)return;openP(cur[(k+d+cur.length)%cur.length].i)}
 document.addEventListener('click',function(e){var x=e.target,c;
- if(c=x.closest('.chip')){var k=c.dataset.k;st[k]=(c.dataset.v===st[k])?'':c.dataset.v;if(k==='brand')st.cat='';render();return}
+ if(c=x.closest('.filter-toggle')){toggleFilterMenu(c.dataset.filterToggle);return}
+ if(c=x.closest('.chip')){closeFilterMenus(false);var k=c.dataset.k;st[k]=(c.dataset.v===st[k])?'':c.dataset.v;if(k==='brand')st.cat='';render();return}
  if(c=x.closest('.card')){openP(+c.dataset.i);return}
  if(c=x.closest('[data-nav]')){step(+c.dataset.nav);return}
  if(x.closest('[data-close]')||x===$('ov'))closeP();
  if(c=x.closest('#lang button')){lang=c.dataset.l;document.documentElement.lang=lang;[].forEach.call($('lang').children,function(b){b.classList.toggle('on',b===c)});render();if($('ov').classList.contains('on'))openP(+$('md').dataset.i,false)}});
-document.addEventListener('keydown',function(e){if(!$('ov').classList.contains('on'))return;if(e.key==='Escape')closeP();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1)});
+document.addEventListener('click',function(e){if(!e.target.closest('.filter-item'))closeFilterMenus(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&closeFilterMenus(true))return;if(!$('ov').classList.contains('on'))return;if(e.key==='Escape')closeP();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1)});
 var tm;$('q').addEventListener('input',function(){clearTimeout(tm);var v=this.value;tm=setTimeout(function(){st.q=v.trim();render()},120)});
-$('sort').addEventListener('change',function(){st.sort=this.value;render()});
+$('sort').addEventListener('change',function(){closeFilterMenus(false);st.sort=this.value;render()});
 function pv(v){return v===''?null:Math.max(0,+v)}
 $('pmin').addEventListener('input',function(){st.pmin=pv(this.value);render()});$('pmax').addEventListener('input',function(){st.pmax=pv(this.value);render()});
-$('clr').addEventListener('click',function(){st={q:'',brand:'',cat:'',type:'',sort:'cat',pmin:null,pmax:null};$('q').value='';$('pmin').value='';$('pmax').value='';render()});
+$('pmin').addEventListener('change',function(){closeFilterMenus(false)});$('pmax').addEventListener('change',function(){closeFilterMenus(false)});
+$('clr').addEventListener('click',function(){closeFilterMenus(false);st={q:'',brand:'',cat:'',type:'',sort:'cat',pmin:null,pmax:null};$('q').value='';$('pmin').value='';$('pmax').value='';render()});
 $('csv').addEventListener('click',function(){
  function q(s){return '"'+String(s).replace(/"/g,'""')+'"'}
  var rows=[['id','brand','category','code','name','price_iqd','price_eur']].concat(P.map(function(p){return [p.id,META.brands[p.brand].name,CATS[p.cat].name.en,p.code,p.name,priceOf(p),EUR[p.id]==null?'':Number(EUR[p.id]).toFixed(2)]}));

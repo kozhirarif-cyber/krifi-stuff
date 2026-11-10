@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brief Plan | Krifi Caffè & Foggy Mug</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+<style>
+/* Anthropic's typefaces (Styrene, Tiempos) are used when installed; Inter and Source Serif 4 stand in otherwise. */
+:root{
+  --sans:"Anthropic Sans","Styrene B","Styrene A",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Anthropic Serif","Tiempos Text","Source Serif 4",Georgia,serif;
+  --bg:#FAF9F5; --surface:#FFFFFF; --ink:#141413; --ink-2:#3D3D3A; --muted:#73726C;
+  --line:#E8E6DC; --line-2:#D9D6CA; --accent:#D97757; --accent-ink:#B0583A; --accent-soft:#F6E8E1; --grey:#C9C6BA;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent-ink);text-decoration:none}
+.top{position:sticky;top:0;z-index:5;background:rgba(250,249,245,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-inner{max-width:1080px;margin:0 auto;padding:18px 32px 0}
+.brand{display:flex;align-items:baseline;gap:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+.brand b{font-size:15px;font-weight:600}
+.brand span{font-size:13px;color:var(--muted)}
+.tabs{display:flex;margin-top:14px}
+.tab{padding:10px 16px 12px;border-bottom:2px solid var(--accent)}
+.tab small{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent-ink)}
+.tab span{font-size:14px;font-weight:500}
+main{max-width:1080px;margin:0 auto;padding:40px 32px 72px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:42px;line-height:1.12;letter-spacing:-.015em;margin:0 0 12px}
+.hero p{font-family:var(--serif);font-size:19px;color:var(--ink-2);margin:0;max-width:760px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0 8px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.kpi .v{font-family:var(--serif);font-size:30px;line-height:1.1;font-weight:500;letter-spacing:-.01em}
+.kpi .v.acc{color:var(--accent-ink)}
+.kpi .l{font-size:13px;color:var(--ink-2);margin-top:6px}
+.kpi .s{font-size:11.5px;color:var(--muted);margin-top:2px}
+section{margin-top:48px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--accent-ink);text-transform:uppercase}
+h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.25;letter-spacing:-.01em;margin:6px 0 16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.card + .card{margin-top:12px}
+svg{width:100%;height:auto;display:block;font-family:var(--sans)}
+.c-title{font-size:15px;font-weight:600;fill:var(--ink)} .c-sub{font-size:11.5px;fill:var(--muted)}
+.c-label{font-size:12.5px;fill:var(--ink)} .c-tiny{font-size:11px;fill:var(--ink-2)} .b{font-weight:600}
+.bar-cost{fill:var(--grey)} .bar-ours{fill:var(--accent)} .bar-comp{fill:#5B6B7F}
+.ref{stroke:#8F8C80;stroke-dasharray:4 4} .axis{stroke:var(--line-2)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:left;font-weight:600;font-size:12px;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line-2);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font-weight:500}
+.brand{} td .brand{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+.muted{color:var(--muted)}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ul.tight{margin:0;padding-left:18px} ul.tight li{margin:6px 0} ul.tight li::marker{color:var(--accent)}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent-ink)}
+.miles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.mile{border-top:2px solid var(--line-2);padding-top:8px;font-size:12.5px;color:var(--ink-2)}
+.mile b{display:block;font-size:12px;color:var(--ink)}
+.mile.key{border-top-color:var(--accent)}
+footer{max-width:1080px;margin:0 auto;padding:20px 32px 48px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:860px){.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.miles{grid-template-columns:1fr 1fr}.hero h1{font-size:32px}main{padding:28px 18px 60px}.top-inner{padding:14px 18px 0}.card{overflow-x:auto}}
+@media print{.top{position:static}body{background:#fff}section,.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-inner">
+  <div class="brand"><span class="dot"></span><b>Krifi Caffè &amp; Foggy Mug</b><span>Exclusive distributor · Iraq</span></div>
+  <div class="tabs"><div class="tab"><small>BRIEF</small><span>Brief Plan</span></div></div>
+</div></div>
+
+<main>
+  <div class="hero">
+    <h1>Italian coffee for Iraq's fastest-growing café market</h1>
+    <p>We hold exclusive rights in Iraq for Krifi Caffè and Foggy Mug, two coffee brands roasted in Ferrara, Italy, since 1961. We launch in Erbil and Sulaymaniyah, selling to cafés, restaurants, hotels and offices.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">46.1M</div><div class="l">People in Iraq</div><div class="s">6.5M in the Kurdistan Region (2024 census)</div></div>
+    <div class="kpi"><div class="v">~85 → 130+</div><div class="l">Branded coffee shops</div><div class="s">Forecast by 2029, plus hundreds of independents</div></div>
+    <div class="kpi"><div class="v">$10.4M</div><div class="l">Coffee imports a year</div><div class="s">2022; no local production</div></div>
+    <div class="kpi"><div class="v acc">32–38%</div><div class="l">Gross margin at list price</div><div class="s">On the four blends in stock</div></div>
+    <div class="kpi"><div class="v acc">410 kg</div><div class="l">Monthly break-even</div><div class="s">Target: March 2027</div></div>
+    <div class="kpi"><div class="v acc">810 kg</div><div class="l">Monthly volume target</div><div class="s">June 2027, about 30 accounts + 2 wholesalers</div></div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Products and prices</div>
+    <h2>Each blend is priced just under its Lavazza equivalent</h2>
+    <div class="card"><svg viewBox="0 0 760 326" role="img" aria-label="Cost, our price and competitor price per kg"><text x="0" y="22" class="c-title">We price just under Lavazza and keep 32–38% gross margin</text><text x="0" y="42" class="c-sub">IQD per kg, 1 kg whole-bean café blends</text><g transform="translate(170,62)"><rect width="10" height="10" rx="2" class="bar-cost"/><text x="16" y="9" class="c-tiny">Our landed cost</text><rect x="130" width="10" height="10" rx="2" class="bar-ours"/><text x="146" y="9" class="c-tiny">Our list price (HoReCa C)</text><rect x="318" width="10" height="10" rx="2" class="bar-comp"/><text x="334" y="9" class="c-tiny">Competitor price</text></g><text x="158" y="112" text-anchor="end" class="c-label b">D.A. Super Crema</text><rect x="170" y="96" width="236.3" height="10" rx="2" class="bar-cost"><title>Our landed cost: 23,125 IQD/kg</title></rect><text x="412.3" y="105" class="c-tiny">23,125</text><rect x="170" y="108" width="367.8" height="10" rx="2" class="bar-ours"><title>Our list price: 36,000 IQD/kg</title></rect><text x="543.8" y="117" class="c-tiny">36,000</text><rect x="170" y="120" width="393.4" height="10" rx="2" class="bar-comp"><title>Lavazza Crema e Aroma: 38,500 IQD/kg</title></rect><text x="569.4" y="129" class="c-tiny">38,500</text><text x="158" y="168" text-anchor="end" class="c-label b">Extra Bar</text><rect x="170" y="152" width="245.7" height="10" rx="2" class="bar-cost"><title>Our landed cost: 24,050 IQD/kg</title></rect><text x="421.7" y="161" class="c-tiny">24,050</text><rect x="170" y="164" width="398.5" height="10" rx="2" class="bar-ours"><title>Our list price: 39,000 IQD/kg</title></rect><text x="574.5" y="173" class="c-tiny">39,000</text><rect x="170" y="176" width="413.8" height="10" rx="2" class="bar-comp"><title>Lavazza Gran Espresso: 40,500 IQD/kg</title></rect><text x="589.8" y="185" class="c-tiny">40,500</text><text x="158" y="224" text-anchor="end" class="c-label b">Super Bar Selected</text><rect x="170" y="208" width="283.5" height="10" rx="2" class="bar-cost"><title>Our landed cost: 27,750 IQD/kg</title></rect><text x="459.5" y="217" class="c-tiny">27,750</text><rect x="170" y="220" width="418.9" height="10" rx="2" class="bar-ours"><title>Our list price: 41,000 IQD/kg</title></rect><text x="594.9" y="229" class="c-tiny">41,000</text><rect x="170" y="232" width="429.1" height="10" rx="2" class="bar-comp"><title>Lavazza Super Crema: 42,000 IQD/kg</title></rect><text x="605.1" y="241" class="c-tiny">42,000</text><text x="158" y="280" text-anchor="end" class="c-label b">The Bike</text><rect x="170" y="264" width="293.0" height="10" rx="2" class="bar-cost"><title>Our landed cost: 28,675 IQD/kg</title></rect><text x="469.0" y="273" class="c-tiny">28,675</text><rect x="170" y="276" width="449.6" height="10" rx="2" class="bar-ours"><title>Our list price: 44,000 IQD/kg</title></rect><text x="625.6" y="285" class="c-tiny">44,000</text><rect x="170" y="288" width="441.9" height="10" rx="2" class="bar-comp"><title>Lavazza Tales of Italy: 43,250 IQD/kg</title></rect><text x="617.9" y="297" class="c-tiny">42,500–44,000</text></svg></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Product</th><th>Our cost / kg</th><th>Our price / kg</th><th>Competitor / kg</th><th>vs competitor</th><th>Gross profit / kg</th></tr></thead>
+        <tbody><tr><td>D.A. Super Crema<span class='brand'>Krifi</span></td><td>23,125</td><td><b>36,000</b></td><td>Lavazza Crema e Aroma<span class='brand'>38,500</span></td><td>-6%</td><td><b>12,875</b> <span class='muted'>(36%)</span></td></tr><tr><td>Extra Bar<span class='brand'>Krifi</span></td><td>24,050</td><td><b>39,000</b></td><td>Lavazza Gran Espresso<span class='brand'>40,500</span></td><td>-4%</td><td><b>14,950</b> <span class='muted'>(38%)</span></td></tr><tr><td>Super Bar Selected<span class='brand'>Krifi</span></td><td>27,750</td><td><b>41,000</b></td><td>Lavazza Super Crema<span class='brand'>42,000</span></td><td>-2%</td><td><b>13,250</b> <span class='muted'>(32%)</span></td></tr><tr><td>The Bike<span class='brand'>Foggy Mug</span></td><td>28,675</td><td><b>44,000</b></td><td>Lavazza Tales of Italy<span class='brand'>42,500–44,000</span></td><td>at parity</td><td><b>15,325</b> <span class='muted'>(35%)</span></td></tr></tbody>
+      </table>
+      <div class="note">IQD. Cost = landed in Sulaymaniyah, incl. shipping and customs, at 1 € = 1,850 IQD. Our price = list price for small cafés (HoReCa C). Competitor = main distributor's 2026 list price.</div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="card"><b>Next lines (to be costed)</b>
+        <ul class="tight">
+          <li>Home capsules, Nespresso-compatible: target <b>7,000</b> per 10, vs Lavazza 8,000 and Nespresso 14,000–15,000.</li>
+          <li>Office capsules (FAP): target <b>60,000</b> per 100, vs Lavazza Blue 67,000.</li>
+          <li>Premium blends, single origins, hot chocolate and summer drinks.</li>
+        </ul>
+      </div>
+      <div class="card"><b>Why customers switch</b>
+        <ul class="tight">
+          <li>Lavazza's best-selling café blends are only 40–50% Arabica.</li>
+          <li>Our coffee costs a café 613–747 IQD per cup, about 12–15% of a 4,900 IQD cappuccino.</li>
+          <li>Machine, technician and training included; blind tasting decides.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Customers</div>
+    <h2>Five customer segments, each with its own price</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Segment</th><th>Who</th><th>Volume</th><th>Price vs list</th><th>What they get</th><th>Net profit / kg*</th></tr></thead>
+        <tbody>
+          <tr><td>Retail (B2C)</td><td>Home buyers, online and café counters</td><td>1–2 kg orders</td><td>+2.5%</td><td>Delivery</td><td>11,250</td></tr>
+          <tr><td>HoReCa C</td><td>Small cafés, bakeries, offices</td><td>Under 15 kg/month</td><td>List</td><td>Cash terms</td><td>11,375</td></tr>
+          <tr><td>HoReCa B</td><td>Established cafés, restaurants</td><td>15–39 kg/month</td><td>−5%</td><td>Machine on rental</td><td>4,860</td></tr>
+          <tr><td>HoReCa A</td><td>Hotels, café chains</td><td>40+ kg/month</td><td>−8%</td><td>Free machine, full service</td><td>4,000</td></tr>
+          <tr><td>Wholesale</td><td>Distributors in other cities</td><td>100+ kg per order</td><td>−14%</td><td>Bulk price, no service</td><td>7,015</td></tr>
+        </tbody>
+      </table>
+      <div class="note">* After delivery, machine, technician and credit costs; Super Bar Selected as reference. Machines are free only above 40 kg/month; below that, kilos bought reduce a monthly rental.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Economics</div>
+    <h2>Break-even at about 410 kg a month</h2>
+    <div class="grid2">
+      <div class="card">
+        <table>
+          <tbody>
+            <tr><td>Fixed operating costs</td><td>4.95M IQD / month</td></tr>
+            <tr><td>Average contribution</td><td>12,030 IQD / kg</td></tr>
+            <tr><td>Break-even volume</td><td>≈ 410 kg / month</td></tr>
+            <tr><td>Example 810 kg month</td><td>+0.47M IQD / month (conservative)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <tbody>
+            <tr><td>Factory minimum order</td><td>5,000 kg ≈ 129.5M IQD (≈ €70,000)</td></tr>
+            <tr><td>Espresso machines</td><td>Needed for placements; cost to confirm</td></tr>
+            <tr><td>Team</td><td>2 sales reps, 2 drivers, on-call technicians</td></tr>
+            <tr><td>Main upside</td><td>Capsules, office and wholesale lines</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Go-to-market</div>
+    <h2>Two cities, two reps, café by café</h2>
+    <div class="card"><svg viewBox="0 0 760 256" role="img" aria-label="Monthly sales ramp"><text x="0" y="22" class="c-title">Break-even in March 2027; 810 kg a month by June</text><text x="0" y="40" class="c-sub">Target kg sold per month, Dec 2026 – Jun 2027</text><rect x="47.4" y="204.7" width="48" height="25.3" rx="3" class="bar-cost"><title>Dec: 120 kg</title></rect><text x="71.4" y="198.7" text-anchor="middle" class="c-tiny b">120</text><text x="71.4" y="246" text-anchor="middle" class="c-tiny">Dec</text><rect x="150.3" y="183.6" width="48" height="46.4" rx="3" class="bar-cost"><title>Jan: 220 kg</title></rect><text x="174.3" y="177.6" text-anchor="middle" class="c-tiny b">220</text><text x="174.3" y="246" text-anchor="middle" class="c-tiny">Jan</text><rect x="253.1" y="162.4" width="48" height="67.6" rx="3" class="bar-cost"><title>Feb: 320 kg</title></rect><text x="277.1" y="156.4" text-anchor="middle" class="c-tiny b">320</text><text x="277.1" y="246" text-anchor="middle" class="c-tiny">Feb</text><rect x="356.0" y="141.3" width="48" height="88.7" rx="3" class="bar-ours"><title>Mar: 420 kg</title></rect><text x="380.0" y="135.3" text-anchor="middle" class="c-tiny b">420</text><text x="380.0" y="246" text-anchor="middle" class="c-tiny">Mar</text><rect x="458.9" y="120.2" width="48" height="109.8" rx="3" class="bar-ours"><title>Apr: 520 kg</title></rect><text x="482.9" y="114.2" text-anchor="middle" class="c-tiny b">520</text><text x="482.9" y="246" text-anchor="middle" class="c-tiny">Apr</text><rect x="561.7" y="92.8" width="48" height="137.2" rx="3" class="bar-ours"><title>May: 650 kg</title></rect><text x="585.7" y="86.8" text-anchor="middle" class="c-tiny b">650</text><text x="585.7" y="246" text-anchor="middle" class="c-tiny">May</text><rect x="664.6" y="59.0" width="48" height="171.0" rx="3" class="bar-ours"><title>Jun: 810 kg</title></rect><text x="688.6" y="53.0" text-anchor="middle" class="c-tiny b">810</text><text x="688.6" y="246" text-anchor="middle" class="c-tiny">Jun</text><line x1="20" x2="740" y1="143.4" y2="143.4" class="ref"/><text x="24" y="138.4" class="c-tiny">Break-even ≈ 410 kg</text><line x1="20" x2="740" y1="230" y2="230" class="axis"/></svg></div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="card"><b>Plan</b>
+        <ul class="tight">
+          <li>One rep each in Erbil and Sulaymaniyah; owner signs wholesalers in other cities.</li>
+          <li>Start with independent cafés now using Lavazza; Foggy Mug for design-led cafés.</li>
+          <li>20 visits and 2 tastings per rep a week; about 3 new accounts a month each.</li>
+          <li>June target: 4 hotel and chain accounts, 10 mid-size, 15 small, 2 wholesalers.</li>
+        </ul>
+      </div>
+      <div class="card"><b>Key risks and responses</b>
+        <ul class="tight">
+          <li><b>Brand unknown:</b> blind tastings, cost per cup, service package.</li>
+          <li><b>Lavazza price cut:</b> price floors protect margin; lead with value blends.</li>
+          <li><b>Exchange rate:</b> prices reviewed when the euro passes 1,950 IQD.</li>
+          <li><b>Stock and cash:</b> negotiate the 5,000 kg minimum over 12 months.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="miles">
+      <div class="mile"><b>Nov 2026</b>Prospect lists, samples, blind tests</div>
+      <div class="mile"><b>Dec–Jan</b>Launch offer, first 14 accounts</div>
+      <div class="mile"><b>Feb 2027</b>First wholesaler; office pilot</div>
+      <div class="mile key"><b>Mar 2027</b>Break-even month</div>
+      <div class="mile key"><b>Jun 2027</b>810 kg a month</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Investor brief, 10 November 2026. Summary of DOC01–DOC04 (Document Hub). All figures in IQD unless stated; 1 € = 1,850 IQD. Market data: <a href="https://shafaq.com/en/Kurdistan/Kurdistan-Region-s-population-exceeds-14-of-Iraq-s-total" target="_blank" rel="noopener">2024 census (Shafaq News)</a>, <a href="https://oec.world/profile/bilateral-product/coffee/reporter/irq" target="_blank" rel="noopener">OEC</a>, <a href="https://www.worldcoffeeportal.com/news/saudi-arabias-kyan-cafe-continues-middle-east-expansion-with-first-iraq-outlet/" target="_blank" rel="noopener">World Coffee Portal</a>, <a href="https://hikersbay.com/prices/iraq/erbil?lang=de" target="_blank" rel="noopener">Hikersbay</a>. Competitor prices: competitor's 2026 price list. Targets are plans, not results.
+</footer>
+</body>
+</html>
