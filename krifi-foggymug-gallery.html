@@ -167,10 +167,10 @@ footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
 
 <!-- ================= PRICES: edit this block to set prices (id -> price) ================= -->
 <script type="application/json" id="prices">{
-"k-0102":0,
+"k-0102":27750,
 "k-0202":0,
 "k-0402":0,
-"k-0302":0,
+"k-0302":24050,
 "k-0702":0,
 "k-0603":0,
 "k-0703":0,
@@ -194,7 +194,7 @@ footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
 "k-3043":0,
 "k-3044":0,
 "k-3051":0,
-"k-1702":0,
+"k-1702":23125,
 "k-1802":0,
 "k-3003":0,
 "k-3035":0,
@@ -225,7 +225,7 @@ footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
 "k-mg12":0,
 "f-castle":0,
 "f-orlando":0,
-"f-bike":0,
+"f-bike":28675,
 "f-orlando-beans":0,
 "f-orlando-ground":0,
 "f-pod-castle":0,
@@ -258,7 +258,7 @@ footer{max-width:1480px;margin:0 auto;padding:6px 18px 40px;color:var(--mute);fo
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
-var PR=JSON.parse($('prices').textContent),META=JSON.parse($('meta').textContent),P=JSON.parse($('products').textContent),IMG=JSON.parse($('images').textContent);
+var PR=JSON.parse($('prices').textContent),EUR={'k-0302':13,'f-bike':15.5,'k-1702':12.5,'k-0102':15},META=JSON.parse($('meta').textContent),P=JSON.parse($('products').textContent),IMG=JSON.parse($('images').textContent);
 var CUR=META.currency;
 function src(k){return 'data:image/webp;base64,'+IMG[k].d}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -266,12 +266,12 @@ var UI={
  en:{title:'Product Gallery',subtitle:'Krifi Caffè · Foggy Mug',search:'Search name, code, blend, notes…',all:'All',brand:'Brand',cat:'Category',type:'Format',sort:'Sort',price:'Price',reset:'Reset',csv:'Download price sheet (CSV)',
   s_cat:'Catalogue order',s_pa:'Price: low to high',s_pd:'Price: high to low',s_na:'Name A–Z',s_cd:'Product code',of:'of',products:'products',prod:'products',
   about:'About',priceL:'Price',code:'Code',aroma:'Aroma',body:'Body',acidity:'Acidity',sweetness:'Sweetness',sens:'Sensory profile',fog:'Fog density',prev:'← Previous',next:'Next →',
-  none:'No products match',none2:'Try clearing a filter or searching something else.',newb:'New',decaf:'Decaf',foot:'Prices are shown as placeholders (0) until the price list is added. Product details are taken from the Krifi Caffè 2023 catalogue and the Foggy Mug product catalogue.',
+  none:'No products match',none2:'Try clearing a filter or searching something else.',newb:'New',decaf:'Decaf',foot:'Prices are shown in IQD; the four products with supplied prices also show their EUR amount (1 EUR = 1,850 IQD). Other products retain their 0 placeholder. Product details are taken from the Krifi Caffè 2023 catalogue and the Foggy Mug product catalogue.',
   types:{Beans:'Beans',Ground:'Ground',Capsules:'Capsules',Pods:'Pods',Drinks:'Drinks & powders',Extras:'Sugar & extras',Machines:'Machines',Merchandising:'Merchandising'}},
  it:{title:'Galleria prodotti',subtitle:'Krifi Caffè · Foggy Mug',search:'Cerca nome, codice, miscela, note…',all:'Tutti',brand:'Marchio',cat:'Categoria',type:'Formato',sort:'Ordina',price:'Prezzo',reset:'Azzera',csv:'Scarica listino prezzi (CSV)',
   s_cat:'Ordine catalogo',s_pa:'Prezzo: crescente',s_pd:'Prezzo: decrescente',s_na:'Nome A–Z',s_cd:'Codice prodotto',of:'di',products:'prodotti',prod:'prodotti',
   about:'Chi siamo',priceL:'Prezzo',code:'Codice',aroma:'Aroma',body:'Corpo',acidity:'Acidità',sweetness:'Dolcezza',sens:'Profilo sensoriale',fog:'Intensità nebbia',prev:'← Precedente',next:'Successivo →',
-  none:'Nessun prodotto trovato',none2:'Prova a togliere un filtro o a cercare altro.',newb:'Novità',decaf:'Deca',foot:'I prezzi sono segnaposto (0) in attesa del listino. Dettagli prodotto tratti dal catalogo Krifi Caffè 2023 e dal catalogo prodotti Foggy Mug.',
+  none:'Nessun prodotto trovato',none2:'Prova a togliere un filtro o a cercare altro.',newb:'Novità',decaf:'Deca',foot:'I prezzi sono in IQD; i quattro prodotti con prezzo fornito mostrano anche l’importo in EUR (1 EUR = 1.850 IQD). Gli altri prodotti mantengono il segnaposto 0. Dettagli prodotto tratti dal catalogo Krifi Caffè 2023 e dal catalogo prodotti Foggy Mug.',
   types:{Beans:'Grani',Ground:'Macinato',Capsules:'Capsule',Pods:'Cialde',Drinks:'Bevande e polveri',Extras:'Zucchero e altro',Machines:'Macchine',Merchandising:'Merchandising'}}};
 var lang='en',st={q:'',brand:'',cat:'',type:'',sort:'cat',pmin:null,pmax:null},cur=[],uid=0;
 var CATS={};META.cats.forEach(function(c,i){c.order=i;CATS[c.id]=c});
@@ -279,6 +279,7 @@ var TYPES=['Beans','Ground','Capsules','Pods','Drinks','Extras','Machines','Merc
 function t(k){return UI[lang][k]}
 function priceOf(p){var v=PR[p.id];return v==null?(p.price||0):v}
 function fmt(v){return Number(v).toLocaleString('en-US')+' '+CUR}
+function fmtPrice(p){var eur=EUR[p.id];return fmt(priceOf(p))+(eur==null?'':' · €'+Number(eur).toFixed(2))}
 P.forEach(function(p,i){p.i=i;var a=[p.name,p.code,p.brand==='fm'?'foggy mug':'krifi',p.cat].concat(p.tags,[p.type,p.pack]);
  if(p.sub)a.push(p.sub.en,p.sub.it);p.desc.en.forEach(function(x){a.push(x)});p.desc.it.forEach(function(x){a.push(x)});p.specs.forEach(function(s){a.push(s[2],s[3])});p._t=a.join(' ').toLowerCase()});
 function typeOf(p){return p.type}
@@ -305,7 +306,7 @@ function card(p){
  if(p.pack)h+='<div class="tags"><span class="tag">'+esc(p.pack)+'</span></div>';
  if(p.sens){var k=['aroma','body','acidity','sweetness'];h+='<div class="sn">'+k.map(function(n,i){return '<div><span>'+t(n)+'</span>'+dots(p.sens[i])+'</div>'}).join('')+'</div>'}
  if(p.fog)h+='<div class="fog"><b>'+p.fog+'</b>'+t('fog')+'</div>';
- h+='<div class="pr"><span class="k">'+t('priceL')+'</span><span class="v">'+fmt(priceOf(p))+'</span></div></div></button>';return h}
+ h+='<div class="pr"><span class="k">'+t('priceL')+'</span><span class="v">'+fmtPrice(p)+'</span></div></div></button>';return h}
 function sortList(a){var s=st.sort,b=a.slice();
  if(s==='pa')b.sort(function(x,y){return priceOf(x)-priceOf(y)||x.i-y.i});
  else if(s==='pd')b.sort(function(x,y){return priceOf(y)-priceOf(x)||x.i-y.i});
@@ -340,7 +341,7 @@ function openP(i,push){
  var p=P[i];if(!p)return;var M=IMG[p.img],B=META.brands[p.brand],C=CATS[p.cat];
  var h='<button class="x" aria-label="Close" data-close="1">×</button><div class="l"'+(p.brand==='fm'?' style="background:'+(M.bg||'#1b1a1d')+'"':'')+'>'+imgTag(p,1)+'</div><div class="r"><div class="crumb">'+esc(B.name)+' · '+esc(C.name[lang])+(p.code?' · #'+esc(p.code):'')+'</div><h3>'+esc(p.name)+'</h3>';
  if(sub(p))h+='<div class="sub">'+esc(sub(p))+'</div>';
- h+='<div class="bigprice"><span class="k">'+t('priceL')+'</span><span class="v">'+fmt(priceOf(p))+'</span>'+(p.pack?'<span class="crumb">'+esc(p.pack)+'</span>':'')+'</div>';
+ h+='<div class="bigprice"><span class="k">'+t('priceL')+'</span><span class="v">'+fmtPrice(p)+'</span>'+(p.pack?'<span class="crumb">'+esc(p.pack)+'</span>':'')+'</div>';
  var rows='';p.specs.forEach(function(s){rows+='<tr><td>'+esc(lang==='it'?s[1]:s[0])+'</td><td>'+esc(lang==='it'?s[3]:s[2])+'</td></tr>'});
  if(rows)h+='<table>'+rows+'</table>';
  if(p.sens){var k=['aroma','body','acidity','sweetness'];h+='<div class="crumb" style="margin-top:6px;font-weight:700">'+t('sens')+'</div><div class="sens">'+k.map(function(n,j){return '<div class="it"><span>'+t(n)+'</span>'+beans(p.sens[j])+'</div>'}).join('')+'</div>'}
@@ -365,7 +366,7 @@ $('pmin').addEventListener('input',function(){st.pmin=pv(this.value);render()});
 $('clr').addEventListener('click',function(){st={q:'',brand:'',cat:'',type:'',sort:'cat',pmin:null,pmax:null};$('q').value='';$('pmin').value='';$('pmax').value='';render()});
 $('csv').addEventListener('click',function(){
  function q(s){return '"'+String(s).replace(/"/g,'""')+'"'}
- var rows=[['id','brand','category','code','name','price']].concat(P.map(function(p){return [p.id,META.brands[p.brand].name,CATS[p.cat].name.en,p.code,p.name,priceOf(p)]}));
+ var rows=[['id','brand','category','code','name','price_iqd','price_eur']].concat(P.map(function(p){return [p.id,META.brands[p.brand].name,CATS[p.cat].name.en,p.code,p.name,priceOf(p),EUR[p.id]==null?'':Number(EUR[p.id]).toFixed(2)]}));
  var blob=new Blob(['﻿'+rows.map(function(r){return r.map(q).join(',')}).join('\n')],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='krifi-foggymug-price-sheet.csv';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)});
 $('hlk').src=src(META.brands.krifi.logo);$('hlf').src=src(META.brands.fm.logo);
 render();
