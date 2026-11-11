@@ -53,7 +53,7 @@
 
     .page-link {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       gap: 16px;
       padding: 16px 18px;
@@ -63,6 +63,16 @@
       font-weight: 650;
       text-decoration: none;
       transition: border-color .15s, background-color .15s, transform .15s;
+    }
+
+    .page-number {
+      flex: 0 0 1.6em;
+      color: #b4532a;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .page-label {
+      flex: 1;
     }
 
     .page-link::after {
@@ -95,9 +105,9 @@
     <p>Explore the pages in this collection.</p>
     <nav aria-label="Site pages">
       <!-- Add another page by copying a link and updating its label and URL. -->
-      <a class="page-link" href="krifi-foggymug-gallery.html">Krifi Caffè &amp; Foggy Mug · Product Gallery</a>
-      <a class="page-link" href="coffee-price-gallery-2026.html">lavazza's items september 2026</a>
-      <a class="page-link" href="brief-plan.html">Brief Plan</a>
+      <a class="page-link" href="krifi-foggymug-gallery.html"><span class="page-number" aria-hidden="true">1.</span><span class="page-label">Krifi Caffè &amp; Foggy Mug · Product Gallery</span></a>
+      <a class="page-link" href="coffee-price-gallery-2026.html"><span class="page-number" aria-hidden="true">2.</span><span class="page-label">lavazza's items september 2026</span></a>
+      <a class="page-link" href="brief-plan.html"><span class="page-number" aria-hidden="true">3.</span><span class="page-label">Brief Plan</span></a>
     </nav>
   </main>
 </body>
